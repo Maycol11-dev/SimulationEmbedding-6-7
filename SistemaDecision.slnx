@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Src/" />
+  <Folder Name="/Src/cSharp/">
+    <Project Path="Src/cSharp/SistemaDecision.API/SistemaDecision.API.csproj" />
+  </Folder>
+</Solution>
