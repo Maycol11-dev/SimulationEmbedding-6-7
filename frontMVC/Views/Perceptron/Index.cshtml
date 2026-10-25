@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "Perceptrón 3x1 - Mesa de perillas";
+}
+
+<link rel="stylesheet" href="~/css/perceptron.css" asp-append-version="true" />
+
+<div class="perceptron-hero">
+    <h1 class="display-5">Perceptrón 3 entradas → 1 neurona</h1>
+    <p class="lead">Hacé visible la "mesa de perillas". Entendé cómo aprende ajustando el error.</p>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card h-100 perceptron-card">
+            <div class="card-body">
+                <h5 class="card-title">1) Entender</h5>
+                <p class="card-text">Ver las flechas, los pesos, la suma ponderada y cómo <code>sigmoid</code> traduce a probabilidad.</p>
+                <a class="btn btn-outline-primary" asp-controller="Perceptron" asp-action="Entender">Ir a Entender</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 perceptron-card">
+            <div class="card-body">
+                <h5 class="card-title">2) Entrenar (animado)</h5>
+                <p class="card-text">Ver el ciclo <em>intentar → equivocarse → ajustar</em> paso a paso con los 8 ejemplos.</p>
+                <a class="btn btn-primary" asp-controller="Perceptron" asp-action="Entrenar">Entrenar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 perceptron-card">
+            <div class="card-body">
+                <h5 class="card-title">3) Jugar</h5>
+                <p class="card-text">Mové los interruptores y mirá el cálculo en vivo con los pesos ya aprendidos.</p>
+                <a class="btn btn-outline-success" asp-controller="Perceptron" asp-action="Jugar">Jugar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h3>¿Y esto qué tiene que ver con ChatGPT?</h3>
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <ul class="llm-list">
+                <li><strong>Todo es pesos:</strong> Acá 4 perillas. Ahí miles de millones. La idea es idéntica: combinar con importancia.</li>
+                <li><strong>Aprende ajustando:</strong> Nadie le escribió la regla. Aprendió mirando ejemplos.</li>
+                <li><strong>Predicción:</strong> Acá predice "ir a la playa o no". Una LLM predice "qué palabra viene después". Misma mecánica, distinto objetivo.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul class="llm-list">
+                <li><strong>Sin reglas escritas:</strong> Hay perillas giradas para generar un patrón.</li>
+                <li><strong>Pequeños ajustes acumulan:</strong> Pasitos chiquitos llevan a acertar todo. A gran escala, eso forma modelos gigantescos.</li>
+                <li><strong>La diferencia es la escala, no el principio.</strong></li>
+            </ul>
+        </div>
+    </div>
+</div>

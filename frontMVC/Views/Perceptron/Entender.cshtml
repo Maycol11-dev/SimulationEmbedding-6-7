@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Entender - Perceptrón 3x1";
+}
+
+<link rel="stylesheet" href="~/css/perceptron.css" asp-append-version="true" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>1) Entender la "mesa de perillas"</h2>
+    <div class="btn-group">
+        <a class="btn btn-outline-secondary" asp-action="Index">Inicio</a>
+        <a class="btn btn-primary" asp-action="Entrenar">Entrenar animado</a>
+        <a class="btn btn-outline-success" asp-action="Jugar">Jugar</a>
+    </div>
+</div>
+
+<p class="text-muted">Mové los interruptores. Mirá cómo cada entrada va con su peso hacia la neurona, se suma y pasa por <code>sigmoid</code>.</p>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card perceptron-card">
+            <div class="card-header">Entradas</div>
+            <div class="card-body">
+                <div class="input-row">
+                    <label class="toggle">
+                        <input type="checkbox" id="chkSol" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <div>
+                        <div class="input-title">☀️ Sol</div>
+                        <div class="input-sub">x1 = <span id="valSol">1</span></div>
+                    </div>
+                    <div class="weight-pill">w1 = <span id="w1">7.0982</span></div>
+                </div>
+
+                <div class="input-row">
+                    <label class="toggle">
+                        <input type="checkbox" id="chkCalor" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <div>
+                        <div class="input-title">🔥 Calor</div>
+                        <div class="input-sub">x2 = <span id="valCalor">1</span></div>
+                    </div>
+                    <div class="weight-pill">w2 = <span id="w2">7.0982</span></div>
+                </div>
+
+                <div class="input-row">
+                    <label class="toggle">
+                        <input type="checkbox" id="chkFinde">
+                        <span class="slider"></span>
+                    </label>
+                    <div>
+                        <div class="input-title">🎉 Fin de semana</div>
+                        <div class="input-sub">x3 = <span id="valFinde">0</span></div>
+                    </div>
+                    <div class="weight-pill">w3 = <span id="w3">7.0982</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card perceptron-card mt-3">
+            <div class="card-header">Bias (exigencia)</div>
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="input-title">b</div>
+                    <div class="input-sub">Terquedad / umbral base</div>
+                </div>
+                <div class="bias-pill">b = <span id="b">-10.4991</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card perceptron-card h-100">
+            <div class="card-header">Cálculo</div>
+            <div class="card-body">
+                <div class="formula">
+                    z = w1*x1 + w2*x2 + w3*x3 + b
+                </div>
+                <div class="calc-line">
+                    z = <span id="term1">7.0982*1</span> + <span id="term2">7.0982*1</span> + <span id="term3">7.0982*0</span> + (<span id="termB">-10.4991</span>) = <strong id="zVal">3.6973</strong>
+                </div>
+                <div class="sigmoid-box">
+                    <div class="sigmoid-title">Sigmoid (traductor)</div>
+                    <div class="sigmoid-formula">p = 1 / (1 + e^(-z))</div>
+                    <div class="sigmoid-result">p = <strong id="pVal">0.9756</strong></div>
+                </div>
+                <div class="prob-bar-wrap">
+                    <div class="prob-labels"><span>0% (NO)</span><span>50%</span><span>100% (SI)</span></div>
+                    <div class="prob-bar">
+                        <div class="prob-fill" id="probFill"></div>
+                        <div class="prob-threshold"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card perceptron-card h-100">
+            <div class="card-header">Decisión</div>
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <div class="decision-icon" id="decIcon">🌊</div>
+                <div class="decision-text" id="decText">SI</div>
+                <div class="decision-sub" id="decSub">Probabilidad alta. Alcanza el umbral (&gt; 0.5)</div>
+                <div class="hint mt-3">Para tomar la decisión, la neurona NO mira todo por igual. Le da distinta importancia a cada cosa.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/perceptron.js"></script>
+}

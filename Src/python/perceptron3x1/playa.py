@@ -65,3 +65,4 @@ with torch.no_grad():
     pred = model(test)
     for i,p in enumerate(pred):
         print(f"Entrada {test[i].tolist()} -> {p.item():.4f} ({'SI' if p.item()>0.5 else 'NO'})")
+        
