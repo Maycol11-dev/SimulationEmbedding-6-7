@@ -9,6 +9,11 @@ public class PerceptronController : Controller
         return View();
     }
 
+    public IActionResult Aprender()
+    {
+        return RedirectToAction("Neural");
+    }
+
     public IActionResult Entender()
     {
         return View();
@@ -16,10 +21,20 @@ public class PerceptronController : Controller
 
     public IActionResult Jugar()
     {
-        return View();
+        return RedirectToAction("Entender");
     }
 
     public IActionResult Entrenar()
+    {
+        return View();
+    }
+
+    public IActionResult Neural()
+    {
+        return View();
+    }
+
+    public IActionResult TikTok()
     {
         return View();
     }

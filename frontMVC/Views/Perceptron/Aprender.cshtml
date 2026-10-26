@@ -1,0 +1,244 @@
+@{
+    ViewData["Title"] = "Aprender el perceptrón";
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/perceptron-aprender.css" asp-append-version="true" />
+
+<div class="aprender-hero">
+    <div>
+        <h1 class="display-6 mb-1">De lo aleatorio al patrón</h1>
+        <div class="aprender-sub">Un recorrido minimalista para ver cómo una red aprende ajustando sus perillas.</div>
+    </div>
+    <div class="stepper">
+        <div class="step-pill active" id="pill-1"><span class="step-dot"></span>1. El problema</div>
+        <div class="step-pill" id="pill-2"><span class="step-dot"></span>2. Mesa de perillas</div>
+        <div class="step-pill" id="pill-3"><span class="step-dot"></span>3. Aprendiendo</div>
+        <div class="step-pill" id="pill-4"><span class="step-dot"></span>4. El resultado</div>
+        <div class="step-pill" id="pill-5"><span class="step-dot"></span>5. Probarlo</div>
+        <div class="step-pill" id="pill-6"><span class="step-dot"></span>6. Escala con LLMs</div>
+    </div>
+</div>
+
+<div class="grid-aprender">
+    <div class="card-min">
+        <div class="card-min-header">
+            <div>
+                <div class="card-min-title">Red neuronal 3x1</div>
+                <div class="card-min-sub">La información viaja por las flechas hacia la neurona</div>
+            </div>
+        </div>
+        <div class="card-min-body">
+            <div class="network-wrap">
+                <svg viewBox="0 0 900 520">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                            <polygon points="0 0, 10 4, 0 8" fill="#d7dbe5" />
+                        </marker>
+                    </defs>
+                    <path class="link" d="M 190 130 L 330 210" marker-end="url(#arrow)" />
+                    <path class="link" d="M 190 260 L 330 260" marker-end="url(#arrow)" />
+                    <path class="link" d="M 190 390 L 330 310" marker-end="url(#arrow)" />
+                    <path class="link" d="M 520 260 L 700 260" marker-end="url(#arrow)" />
+                    <g transform="translate(120,110)">
+                        <circle class="node" cx="0" cy="0" r="38" />
+                        <text class="node-label" y="-4">☀️</text>
+                        <text class="node-sub" y="14">Sol</text>
+                        <text class="node-weight" y="58">w1</text>
+                    </g>
+                    <g transform="translate(120,260)">
+                        <circle class="node" cx="0" cy="0" r="38" />
+                        <text class="node-label" y="-4">🔥</text>
+                        <text class="node-sub" y="14">Calor</text>
+                        <text class="node-weight" y="58">w2</text>
+                    </g>
+                    <g transform="translate(120,410)">
+                        <circle class="node" cx="0" cy="0" r="38" />
+                        <text class="node-label" y="-4">🎉</text>
+                        <text class="node-sub" y="14">Fin de semana</text>
+                        <text class="node-weight" y="58">w3</text>
+                    </g>
+                    <g id="neuron" transform="translate(420,260)">
+                        <circle class="node neuron-node" cx="0" cy="0" r="58" />
+                        <text class="node-label" y="-6">Neurona</text>
+                        <text class="node-sub" y="12">z = w*x + b</text>
+                        <text class="node-sub" y="28">sigmoid → p</text>
+                    </g>
+                    <g transform="translate(770,260)">
+                        <circle class="node" cx="0" cy="0" r="38" />
+                        <text class="node-label" y="-4">🏖️</text>
+                        <text class="node-sub" y="14">Ir a la playa</text>
+                        <text class="node-sub" y="30">SI / NO</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="narration">
+                <div class="narration-title" id="narrTitle">El problema</div>
+                <div class="narration-text" id="narrText">¿Ir a la playa? Decidimos con 3 condiciones: sol, calor y fin de semana.</div>
+            </div>
+            <div class="actions">
+                <button class="btn-ghost" id="btnRestart">Reiniciar</button>
+                <button class="btn-primary-soft" id="btnNext">Siguiente</button>
+                <button class="btn-primary-soft hidden" id="btnStartTrain">Ver el aprendizaje</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-min">
+        <div class="card-min-header">
+            <div>
+                <div class="card-min-title">Perillas, error y aprendizaje</div>
+                <div class="card-min-sub">Todo pasa por ajustar pesos y bias con el error</div>
+            </div>
+        </div>
+        <div class="card-min-body">
+            <div class="step-panel" id="panel-1">
+                <div class="mini-panel">
+                    <div class="mini-panel-header">
+                        <div>
+                            <div class="mini-title">Tres entradas</div>
+                            <div class="mini-sub">Valores binarios 0 / 1</div>
+                        </div>
+                    </div>
+                    <div class="panel-row">
+                        <div class="mini-panel"><div class="example-row"><span>☀️ Sol</span><span>x1</span></div></div>
+                        <div class="mini-panel"><div class="example-row"><span>🔥 Calor</span><span>x2</span></div></div>
+                        <div class="mini-panel"><div class="example-row"><span>🎉 Fin de semana</span><span>x3</span></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-panel hidden" id="panel-2">
+                <div class="mini-panel">
+                    <div class="mini-panel-header">
+                        <div>
+                            <div class="mini-title">La mesa de perillas</div>
+                            <div class="mini-sub">No mira todo por igual. Le da distinta importancia</div>
+                        </div>
+                    </div>
+                    <div class="knob-list">
+                        <div class="knob-item"><span>w1</span><div class="knob-track"><div class="knob-fill" id="bar1"></div></div><span class="knob-value" id="kw1">0.0000</span></div>
+                        <div class="knob-item"><span>w2</span><div class="knob-track"><div class="knob-fill" id="bar2"></div></div><span class="knob-value" id="kw2">0.0000</span></div>
+                        <div class="knob-item"><span>w3</span><div class="knob-track"><div class="knob-fill" id="bar3"></div></div><span class="knob-value" id="kw3">0.0000</span></div>
+                        <div class="knob-item"><span>b</span><div class="knob-track"><div class="knob-fill bias" id="barb"></div></div><span class="knob-value" id="kb">0.0000</span></div>
+                    </div>
+                    <div class="mini-sub">Al principio son aleatorios. Ahí empieza todo.</div>
+                </div>
+            </div>
+
+            <div class="step-panel hidden" id="panel-3">
+                <div class="mini-panel">
+                    <div class="mini-panel-header">
+                        <div>
+                            <div class="mini-title">Intentar → Equivocarse → Ajustar</div>
+                            <div class="mini-sub">Época <span id="epochCount">0</span> / 10 (demo)</div>
+                        </div>
+                        <span class="chip blue">Un ejemplo por vez</span>
+                    </div>
+                    <div class="panel-row">
+                        <div class="mini-panel">
+                            <div class="mini-sub">Ejemplo</div>
+                            <div class="example-row"><span>Entrada</span><span id="exRow">[?, ?, ?]</span></div>
+                            <div class="example-row"><span>Esperado</span><span id="exExpect">?</span></div>
+                        </div>
+                        <div class="mini-panel">
+                            <div class="mini-sub">Predicción vs real</div>
+                            <div class="example-row"><span>Yo digo</span><span id="predRow">-</span></div>
+                        </div>
+                    </div>
+                    <div class="narration">
+                        <div class="narration-title">Ciclo</div>
+                        <div class="narration-text" id="trainMsg">Presioná "Ver el aprendizaje" para ver el ciclo intentar → equivocarse → ajustar.</div>
+                    </div>
+                </div>
+                <div class="mini-panel">
+                    <div class="mini-panel-header">
+                        <div>
+                            <div class="mini-title">Pérdida (loss)</div>
+                            <div class="mini-sub">Baja a medida que se ajustan las perillas</div>
+                        </div>
+                    </div>
+                    <div class="loss-wrap">
+                        <svg class="loss-svg" viewBox="0 0 300 140">
+                            <polyline class="loss-line" id="lossPoly" points="10,130" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-panel hidden" id="panel-4">
+                <div class="mini-panel">
+                    <div class="mini-panel-header">
+                        <div>
+                            <div class="mini-title">Así quedó la mesa de perillas</div>
+                            <div class="mini-sub">Descubrió la importancia de cada entrada</div>
+                        </div>
+                        <span class="chip green">Aprendido</span>
+                    </div>
+                    <div class="reveal-grid">
+                        <div class="reveal-pill"><span class="reveal-label">w1 (sol)</span><span class="reveal-value">7.0982</span></div>
+                        <div class="reveal-pill"><span class="reveal-label">w2 (calor)</span><span class="reveal-value">7.0982</span></div>
+                        <div class="reveal-pill"><span class="reveal-label">w3 (finde)</span><span class="reveal-value">7.0982</span></div>
+                        <div class="reveal-pill"><span class="reveal-label">b</span><span class="reveal-value">-10.4991</span></div>
+                    </div>
+                    <div class="narration">
+                        <div class="narration-title">Regla descubierta</div>
+                        <div class="narration-text">Las 3 valen lo mismo. Necesita <strong>al menos 2 de 3</strong> para superar el umbral y decir <strong>SÍ</strong>.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-panel hidden" id="panel-5">
+                <div class="mini-panel">
+                    <div class="mini-panel-header">
+                        <div>
+                            <div class="mini-title">Ahora probalo vos</div>
+                            <div class="mini-sub">Con los pesos ya aprendidos</div>
+                        </div>
+                    </div>
+                    <div class="play-grid">
+                        <div class="play-toggle" id="t1"><span>☀️ Sol</span><span>x1=<span id="pt1">0</span></span></div>
+                        <div class="play-toggle" id="t2"><span>🔥 Calor</span><span>x2=<span id="pt2">0</span></span></div>
+                        <div class="play-toggle" id="t3"><span>🎉 Fin de semana</span><span>x3=<span id="pt3">0</span></span></div>
+                    </div>
+                    <div class="panel-row">
+                        <div class="mini-panel">
+                            <div class="example-row"><span>z</span><span id="pz">-10.4991</span></div>
+                            <div class="example-row"><span>p = sigmoid(z)</span><span id="pp">0.0000</span></div>
+                        </div>
+                        <div class="mini-panel">
+                            <div class="mini-sub">Decisión</div>
+                            <div style="font-size:2rem;font-weight:700" id="pres">NO</div>
+                            <div class="mini-sub" id="psub">No alcanza el umbral.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-panel hidden" id="panel-6">
+                <div class="llm-mini">
+                    <div class="narration-title">¿Y esto qué tiene que ver con ChatGPT?</div>
+                    <div class="narration-text">Acá hay 4 perillas. ChatGPT tiene trillones. El mecanismo es idéntico.</div>
+                </div>
+                <div class="panel-row">
+                    <div class="mini-panel">
+                        <div class="example-row"><span>Acá</span><span>Ir a la playa o no</span></div>
+                        <div class="example-row"><span>LLM</span><span>Predecir siguiente palabra</span></div>
+                        <div class="example-row"><span>Aprendizaje</span><span>Intentar → equivocarse → ajustar</span></div>
+                    </div>
+                    <div class="mini-panel">
+                        <div class="example-row"><span>Pesos</span><span>Combinan importancia</span></div>
+                        <div class="example-row"><span>Reglas</span><span>Sin reglas escritas</span></div>
+                        <div class="example-row"><span>Escala</span><span>Diferencia es cantidad, no principio</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/perceptron-aprender.js" asp-append-version="true"></script>
+}

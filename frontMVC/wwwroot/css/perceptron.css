@@ -197,7 +197,11 @@
 }
 
 .train-table tbody tr.active {
-    background: #f1f8ff;
+    background: linear-gradient(90deg, rgba(79, 155, 255, 0.25) 0%, transparent 100%);
+}
+
+.train-table tbody tr.active td {
+    color: var(--text, #e7e9ee);
 }
 
 .current-case {

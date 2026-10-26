@@ -1,60 +1,72 @@
 @{
-    ViewData["Title"] = "Perceptrón 3x1 - Mesa de perillas";
+    ViewData["Title"] = "Simuladores Neuronales";
 }
 
-<link rel="stylesheet" href="~/css/perceptron.css" asp-append-version="true" />
+@section Head {
+    <link rel="stylesheet" href="~/css/neural-dark.css" asp-append-version="true" />
+}
 
-<div class="perceptron-hero">
-    <h1 class="display-5">Perceptrón 3 entradas → 1 neurona</h1>
-    <p class="lead">Hacé visible la "mesa de perillas". Entendé cómo aprende ajustando el error.</p>
-</div>
+<div class="page-full">
+    <header class="page-header">
+        <span class="page-kicker">Neural Simulators</span>
+        <h1 class="page-title">Simuladores de Redes Neuronales</h1>
+        <p class="page-subtitle">Desde el perceptrón más simple hasta un simulador de recomendación inspirado en TikTok.</p>
+    </header>
 
-<div class="row g-4 mt-2">
-    <div class="col-md-4">
-        <div class="card h-100 perceptron-card">
-            <div class="card-body">
-                <h5 class="card-title">1) Entender</h5>
-                <p class="card-text">Ver las flechas, los pesos, la suma ponderada y cómo <code>sigmoid</code> traduce a probabilidad.</p>
-                <a class="btn btn-outline-primary" asp-controller="Perceptron" asp-action="Entender">Ir a Entender</a>
+    <div class="layout-grid">
+        <section class="panel">
+            <header class="panel-header">
+                <div class="panel-title-group">
+                    <span class="panel-kicker">Fundamentos</span>
+                    <h2 class="panel-title">Perceptrón 3x1</h2>
+                    <span class="panel-subtitle">Aprende ajustando pesos y bias</span>
+                </div>
+            </header>
+            <div class="panel-body">
+                <div class="narration-bar">
+                    <span class="narration-kicker">Objetivo</span>
+                    <span class="narration-text">Ver el ciclo intentar → equivocarse → ajustar hasta descubrir "al menos 2 de 3"</span>
+                </div>
+                <div class="actions-row">
+                    <a class="btn-neo text-decoration-none" asp-controller="Perceptron" asp-action="Neural">Recorrido unificado</a>
+                    <a class="btn-ghost-neo text-decoration-none" asp-controller="Perceptron" asp-action="Entrenar">Entrenamiento animado</a>
+                    <a class="btn-ghost-neo text-decoration-none" asp-controller="Perceptron" asp-action="Entender">Entender / Probar</a>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card h-100 perceptron-card">
-            <div class="card-body">
-                <h5 class="card-title">2) Entrenar (animado)</h5>
-                <p class="card-text">Ver el ciclo <em>intentar → equivocarse → ajustar</em> paso a paso con los 8 ejemplos.</p>
-                <a class="btn btn-primary" asp-controller="Perceptron" asp-action="Entrenar">Entrenar</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card h-100 perceptron-card">
-            <div class="card-body">
-                <h5 class="card-title">3) Jugar</h5>
-                <p class="card-text">Mové los interruptores y mirá el cálculo en vivo con los pesos ya aprendidos.</p>
-                <a class="btn btn-outline-success" asp-controller="Perceptron" asp-action="Jugar">Jugar</a>
-            </div>
-        </div>
-    </div>
-</div>
+        </section>
 
-<div class="mt-5">
-    <h3>¿Y esto qué tiene que ver con ChatGPT?</h3>
-    <div class="row g-3 mt-1">
-        <div class="col-md-6">
-            <ul class="llm-list">
-                <li><strong>Todo es pesos:</strong> Acá 4 perillas. Ahí miles de millones. La idea es idéntica: combinar con importancia.</li>
-                <li><strong>Aprende ajustando:</strong> Nadie le escribió la regla. Aprendió mirando ejemplos.</li>
-                <li><strong>Predicción:</strong> Acá predice "ir a la playa o no". Una LLM predice "qué palabra viene después". Misma mecánica, distinto objetivo.</li>
-            </ul>
-        </div>
-        <div class="col-md-6">
-            <ul class="llm-list">
-                <li><strong>Sin reglas escritas:</strong> Hay perillas giradas para generar un patrón.</li>
-                <li><strong>Pequeños ajustes acumulan:</strong> Pasitos chiquitos llevan a acertar todo. A gran escala, eso forma modelos gigantescos.</li>
-                <li><strong>La diferencia es la escala, no el principio.</strong></li>
-            </ul>
-        </div>
+        <aside class="side-stack">
+            <section class="data-panel">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Avanzado</span>
+                        <h3 class="data-title">Algoritmo de Recomendación TikTok</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="narration-bar" style="align-self: stretch; text-align: left; border-radius: 14px;">
+                        <span class="narration-kicker">Arquitectura</span>
+                        <span class="narration-text">25 entradas → X neuronas (4-12) → 3 salidas. Interacciones, contenido, contexto e historial.</span>
+                    </div>
+                    <div class="actions-row">
+                        <a class="btn-neo text-decoration-none" asp-controller="Perceptron" asp-action="TikTok">Abrir simulador</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data-panel">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Conexión</span>
+                        <h3 class="data-title">Escala</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="data-row"><div class="data-label"><span>Perceptrón</span></div><span class="data-sub">4 perillas</span><span>Didáctico</span></div>
+                    <div class="data-row"><div class="data-label"><span>MLP</span></div><span class="data-sub">Capas ocultas</span><span>Representaciones</span></div>
+                    <div class="data-row"><div class="data-label"><span>LLMs</span></div><span class="data-sub">Miles de millones</span><span>Mismo principio</span></div>
+                </div>
+            </section>
+        </aside>
     </div>
 </div>

@@ -1,0 +1,220 @@
+@{
+    ViewData["Title"] = "Neural Path";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/neural-dark.css" asp-append-version="true" />
+}
+
+<div class="page-full">
+    <header class="page-header">
+        <span class="page-kicker">Perceptrón 3x1</span>
+        <h1 class="page-title">Camino hacia el patrón</h1>
+        <p class="page-subtitle">Un recorrido cinemático para visualizar cómo los pesos convergen desde valores aleatorios hasta descubrir la regla.</p>
+        <nav class="step-nav">
+            <div class="step-chip active" id="s-1"><span class="step-index">01</span>Problema</div>
+            <div class="step-chip" id="s-2"><span class="step-index">02</span>Perillas</div>
+            <div class="step-chip" id="s-3"><span class="step-index">03</span>Aprendizaje</div>
+            <div class="step-chip" id="s-4"><span class="step-index">04</span>Convergencia</div>
+            <div class="step-chip" id="s-5"><span class="step-index">05</span>Validación</div>
+            <div class="step-chip" id="s-6"><span class="step-index">06</span>Escala</div>
+        </nav>
+    </header>
+
+    <div class="layout-grid">
+        <section class="panel">
+            <header class="panel-header">
+                <div class="panel-title-group">
+                    <span class="panel-kicker">Red</span>
+                    <h2 class="panel-title">3 entradas → 1 neurona</h2>
+                    <span class="panel-subtitle">Las conexiones se iluminan conforme avanza el proceso</span>
+                </div>
+            </header>
+            <div class="panel-body">
+                <div class="network-stage">
+                    <svg viewBox="0 0 900 520">
+                        <defs>
+                            <linearGradient id="linkGlow" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="rgba(79,155,255,0)" />
+                                <stop offset="50%" stop-color="rgba(79,155,255,1)" />
+                                <stop offset="100%" stop-color="rgba(34,211,238,0)" />
+                            </linearGradient>
+                            <linearGradient id="lossGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(79,155,255,1)" />
+                                <stop offset="100%" stop-color="rgba(34,211,238,0.4)" />
+                            </linearGradient>
+                        </defs>
+                        <path class="stage-link" d="M 190 130 L 330 210" />
+                        <path class="stage-link" d="M 190 260 L 330 260" />
+                        <path class="stage-link" d="M 190 390 L 330 310" />
+                        <path class="stage-link" d="M 520 260 L 700 260" />
+                        <g transform="translate(120,110)">
+                            <circle class="stage-node" cx="0" cy="0" r="36" />
+                            <text class="stage-label" y="-2">Sol</text>
+                            <text class="stage-sub" y="16">x1</text>
+                            <text class="stage-weight" y="52">w1</text>
+                        </g>
+                        <g transform="translate(120,260)">
+                            <circle class="stage-node" cx="0" cy="0" r="36" />
+                            <text class="stage-label" y="-2">Calor</text>
+                            <text class="stage-sub" y="16">x2</text>
+                            <text class="stage-weight" y="52">w2</text>
+                        </g>
+                        <g transform="translate(120,410)">
+                            <circle class="stage-node" cx="0" cy="0" r="36" />
+                            <text class="stage-label" y="-2">Fin de semana</text>
+                            <text class="stage-sub" y="16">x3</text>
+                            <text class="stage-weight" y="52">w3</text>
+                        </g>
+                        <g transform="translate(420,260)">
+                            <circle class="stage-node neuron" cx="0" cy="0" r="56" />
+                            <text class="stage-label" y="-6">Neurona</text>
+                            <text class="stage-sub" y="12">z = w·x + b</text>
+                            <text class="stage-sub" y="28">sigmoid</text>
+                        </g>
+                        <g transform="translate(770,260)">
+                            <circle class="stage-node" cx="0" cy="0" r="36" />
+                            <text class="stage-label" y="-2">Decisión</text>
+                            <text class="stage-sub" y="16">SI / NO</text>
+                        </g>
+                    </svg>
+                </div>
+                <div class="narration-bar">
+                    <span class="narration-kicker" id="narrTitle">El problema</span>
+                    <span class="narration-text" id="narrText">Decidir ir a la playa con sol, calor y fin de semana.</span>
+                </div>
+                <div class="actions-row">
+                    <a class="btn-ghost-neo" asp-controller="Perceptron" asp-action="Index">Volver</a>
+                    <button class="btn-ghost-neo" id="btnReset">Reiniciar</button>
+                    <button class="btn-neo hidden" id="btnTrain">Iniciar aprendizaje</button>
+                    <button class="btn-neo" id="btnNext">Siguiente</button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="side-stack">
+            <section class="data-panel step-panel" id="panel-1">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Entradas</span>
+                        <h3 class="data-title">Condiciones</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="data-row"><div class="data-label"><span>Sol</span></div><span class="data-sub">x1</span><span class="data-mono">0 / 1</span></div>
+                    <div class="data-row"><div class="data-label"><span>Calor</span></div><span class="data-sub">x2</span><span class="data-mono">0 / 1</span></div>
+                    <div class="data-row"><div class="data-label"><span>Fin de semana</span></div><span class="data-sub">x3</span><span class="data-mono">0 / 1</span></div>
+                </div>
+            </section>
+
+            <section class="data-panel step-panel hidden" id="panel-2">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Pesos</span>
+                        <h3 class="data-title">Mesa de perillas</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="meter"><span class="data-mono">w1</span><div class="meter-track"><div class="meter-fill" id="m1"></div></div><span class="data-mono" id="v1">0.0000</span></div>
+                    <div class="meter"><span class="data-mono">w2</span><div class="meter-track"><div class="meter-fill" id="m2"></div></div><span class="data-mono" id="v2">0.0000</span></div>
+                    <div class="meter"><span class="data-mono">w3</span><div class="meter-track"><div class="meter-fill" id="m3"></div></div><span class="data-mono" id="v3">0.0000</span></div>
+                    <div class="meter"><span class="data-mono">b</span><div class="meter-track"><div class="meter-fill bias" id="mb"></div></div><span class="data-mono" id="vb">0.0000</span></div>
+                </div>
+            </section>
+
+            <section class="data-panel step-panel hidden" id="panel-3">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Entrenamiento</span>
+                        <h3 class="data-title">Intentar → Equivocarse → Ajustar</h3>
+                    </div>
+                    <span class="data-sub">Época <span class="data-mono" id="ep">0</span>/10</span>
+                </header>
+                <div class="data-body">
+                    <div class="example-grid">
+                        <div class="example-card" id="ec-0"><span class="data-mono">[1,1,1]</span><span class="data-sub">SI</span></div>
+                        <div class="example-card" id="ec-1"><span class="data-mono">[1,1,0]</span><span class="data-sub">SI</span></div>
+                        <div class="example-card" id="ec-2"><span class="data-mono">[0,1,1]</span><span class="data-sub">SI</span></div>
+                        <div class="example-card" id="ec-3"><span class="data-mono">[1,0,1]</span><span class="data-sub">SI</span></div>
+                        <div class="example-card" id="ec-4"><span class="data-mono">[0,0,0]</span><span class="data-sub">NO</span></div>
+                        <div class="example-card" id="ec-5"><span class="data-mono">[1,0,0]</span><span class="data-sub">NO</span></div>
+                        <div class="example-card" id="ec-6"><span class="data-mono">[0,0,1]</span><span class="data-sub">NO</span></div>
+                        <div class="example-card" id="ec-7"><span class="data-mono">[0,1,0]</span><span class="data-sub">NO</span></div>
+                    </div>
+                    <div class="data-row"><div class="data-label"><span>Predicción</span></div><span class="data-mono" id="predNow">-</span><span id="predLab">-</span></div>
+                    <div class="data-row"><div class="data-label"><span>Esperado</span></div><span class="data-sub">Referencia</span><span id="expLab">-</span></div>
+                </div>
+            </section>
+
+            <section class="data-panel step-panel hidden" id="panel-3b">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Pérdida</span>
+                        <h3 class="data-title">Curva de convergencia</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <svg class="loss-canvas" viewBox="0 0 560 170">
+                        <polyline class="loss-path" id="lossPath" points="20,150" />
+                    </svg>
+                </div>
+            </section>
+
+            <section class="data-panel step-panel hidden" id="panel-4">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Convergencia</span>
+                        <h3 class="data-title">Pesos finales</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="reveal-grid">
+                        <div class="reveal-tile"><span class="data-sub">w1</span><span class="data-mono">7.0982</span></div>
+                        <div class="reveal-tile"><span class="data-sub">w2</span><span class="data-mono">7.0982</span></div>
+                        <div class="reveal-tile"><span class="data-sub">w3</span><span class="data-mono">7.0982</span></div>
+                        <div class="reveal-tile"><span class="data-sub">b</span><span class="data-mono">-10.4991</span></div>
+                    </div>
+                    <div class="data-row"><div class="data-label"><span>Regla</span></div><span class="data-sub">Descubierta</span><span>Al menos 2 de 3</span></div>
+                </div>
+            </section>
+
+            <section class="data-panel step-panel hidden" id="panel-5">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Validación</span>
+                        <h3 class="data-title">Probar</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="toggle-grid">
+                        <div class="toggle-tile" id="t1"><span>Sol</span><span class="data-mono">x1=<span id="pt1">0</span></span></div>
+                        <div class="toggle-tile" id="t2"><span>Calor</span><span class="data-mono">x2=<span id="pt2">0</span></span></div>
+                        <div class="toggle-tile" id="t3"><span>Fin de semana</span><span class="data-mono">x3=<span id="pt3">0</span></span></div>
+                    </div>
+                    <div class="data-row"><div class="data-label"><span>z</span></div><span class="data-mono" id="pz">-10.4991</span><span class="data-mono" id="pp">0.0000</span></div>
+                    <div class="result-hero">
+                        <span class="result-value" id="pres">NO</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data-panel step-panel hidden" id="panel-6">
+                <header class="data-header">
+                    <div class="data-title-group">
+                        <span class="data-kicker">Escala</span>
+                        <h3 class="data-title">Mismo principio</h3>
+                    </div>
+                </header>
+                <div class="data-body">
+                    <div class="data-row"><div class="data-label"><span>Acá</span></div><span class="data-sub">4 perillas</span><span>Ir a la playa</span></div>
+                    <div class="data-row"><div class="data-label"><span>LLM</span></div><span class="data-sub">Miles de millones</span><span>Predecir siguiente token</span></div>
+                    <div class="data-row"><div class="data-label"><span>Aprendizaje</span></div><span class="data-sub">Intentar → equivocar → ajustar</span><span>Idéntico</span></div>
+                </div>
+            </section>
+        </aside>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/neural-dark.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,555 @@
+:root {
+  --bg: #05070f;
+  --bg-2: #0b1026;
+  --card: #10162b;
+  --border: rgba(148, 163, 184, 0.25);
+  --text: #e7e9ee;
+  --sub: #9aa3c0;
+  --accent: #4f9bff;
+  --accent-2: #22d3ee;
+  --green: #22c55e;
+  --red: #ef4444;
+  --violet: #a78bfa;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(1200px 800px at 50% 0%, #151b33 0%, var(--bg) 55%);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+}
+
+main {
+  min-height: 100vh;
+}
+
+.page-full {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: clamp(16px, 4vw, 48px);
+  gap: clamp(18px, 4vw, 36px);
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.page-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 0.75rem;
+  color: var(--sub);
+}
+
+.page-title {
+  font-size: clamp(2rem, 6vw, 4.6rem);
+  font-weight: 600;
+  margin: 0;
+}
+
+.page-subtitle {
+  max-width: 720px;
+  color: var(--sub);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+}
+
+.step-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.step-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+}
+
+.step-chip.active {
+  color: var(--text);
+  border-color: rgba(79, 155, 255, 0.8);
+  box-shadow: 0 0 0 6px rgba(79, 155, 255, 0.08);
+}
+
+.step-chip.done {
+  color: var(--text);
+}
+
+.step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 0.7rem;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.25fr) minmax(320px, 1fr);
+  gap: clamp(18px, 4vw, 32px);
+  align-items: stretch;
+}
+
+@media (max-width: 1200px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  position: relative;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: radial-gradient(600px 400px at 50% 0%, rgba(79, 155, 255, 0.12) 0%, transparent 70%), linear-gradient(180deg, rgba(255,255,255,0.01) 0%, transparent 100%), var(--card);
+  box-shadow: 0 80px 160px -120px rgba(79, 155, 255, 0.9);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(800px 200px at 50% 0%, rgba(79, 155, 255, 0.16) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(18px, 3vw, 28px) clamp(18px, 4vw, 36px) 0 clamp(18px, 4vw, 36px);
+}
+
+.panel-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.panel-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.7rem;
+  color: var(--sub);
+}
+
+.panel-title {
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  margin: 0;
+}
+
+.panel-subtitle {
+  color: var(--sub);
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 3vw, 28px);
+  padding: clamp(14px, 3vw, 26px) clamp(18px, 4vw, 36px) clamp(22px, 4vw, 38px) clamp(18px, 4vw, 36px);
+}
+
+.network-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.network-stage svg {
+  width: 100%;
+  height: 100%;
+}
+
+.stage-link {
+  stroke: rgba(148, 163, 184, 0.4);
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.stage-link.flow {
+  stroke: url(#linkGlow);
+  stroke-dasharray: 10 12;
+  animation: flow 800ms linear infinite;
+}
+
+.stage-link.ok {
+  stroke: var(--green);
+  filter: drop-shadow(0 0 18px rgba(34, 197, 94, 0.25));
+}
+
+.stage-link.wrong {
+  stroke: var(--red);
+  filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.2));
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -44;
+  }
+}
+
+.stage-node {
+  fill: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%), var(--card);
+  stroke: rgba(148, 163, 184, 0.5);
+  stroke-width: 1.5;
+}
+
+.stage-node.active {
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 40px rgba(79, 155, 255, 0.25));
+}
+
+.stage-node.neuron {
+  stroke: var(--accent-2);
+}
+
+.stage-label {
+  fill: var(--text);
+  text-anchor: middle;
+  font-size: 12px;
+}
+
+.stage-sub {
+  fill: var(--sub);
+  text-anchor: middle;
+  font-size: 11px;
+}
+
+.stage-weight {
+  fill: var(--accent-2);
+  text-anchor: middle;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.narration-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 12px 26px;
+  align-self: center;
+  text-align: center;
+}
+
+.narration-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.7rem;
+  color: var(--sub);
+}
+
+.narration-text {
+  color: var(--text);
+}
+
+.side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vw, 24px);
+}
+
+.data-panel {
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.01) 0%, transparent 100%), var(--card);
+  display: flex;
+  flex-direction: column;
+}
+
+.data-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: clamp(16px, 3vw, 24px) clamp(18px, 3vw, 28px) 0 clamp(18px, 3vw, 28px);
+}
+
+.data-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.36em;
+  font-size: 0.7rem;
+  color: var(--sub);
+}
+
+.data-title {
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  margin: 0;
+}
+
+.data-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px clamp(18px, 3vw, 28px) clamp(20px, 3vw, 30px) clamp(18px, 3vw, 28px);
+}
+
+.data-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+}
+
+.data-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.data-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.data-sub {
+  color: var(--sub);
+}
+
+.meter {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px;
+  align-items: center;
+  gap: 14px;
+}
+
+.meter-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  transition: width 420ms ease;
+}
+
+.meter-fill.bias {
+  background: linear-gradient(90deg, var(--violet) 0%, var(--accent) 100%);
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.example-card {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.example-card.active {
+  border-color: rgba(79, 155, 255, 0.8);
+  box-shadow: 0 0 0 6px rgba(79, 155, 255, 0.05);
+}
+
+.example-card.ok {
+  border-color: rgba(34, 197, 94, 0.8);
+}
+
+.example-card.bad {
+  border-color: rgba(239, 68, 68, 0.8);
+}
+
+.loss-canvas {
+  width: 100%;
+  height: 160px;
+}
+
+.loss-path {
+  fill: none;
+  stroke: url(#lossGrad);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-neo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(79, 155, 255, 0.8);
+  padding: 10px 22px;
+  color: var(--text);
+  text-decoration: none;
+  background: radial-gradient(circle, rgba(79, 155, 255, 0.25) 0%, transparent 70%);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-ghost-neo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 10px 22px;
+  color: var(--sub);
+  text-decoration: none;
+  background: transparent;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.btn-ghost-neo:hover {
+  color: var(--text);
+  border-color: rgba(79, 155, 255, 0.6);
+}
+
+.btn-neo:hover {
+  box-shadow: 0 0 0 6px rgba(79, 155, 255, 0.08);
+}
+
+.reveal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .reveal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.reveal-tile {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.reveal-tile.active {
+  border-color: rgba(34, 197, 94, 0.8);
+  box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.05);
+}
+
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.toggle-tile {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.toggle-tile.active {
+  border-color: rgba(79, 155, 255, 0.8);
+}
+
+.result-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.result-value {
+  font-size: clamp(3rem, 12vw, 9rem);
+  font-weight: 600;
+}
+
+.train-table {
+  color: var(--text);
+  width: 100%;
+}
+
+.train-table thead th {
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.7rem;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 12px;
+}
+
+.train-table td {
+  border-top: 1px solid var(--border);
+  padding: 10px 12px;
+  color: var(--text);
+}
+
+.train-table tbody tr {
+  transition: background 200ms ease;
+}
+
+.train-table tbody tr.active {
+  background: linear-gradient(90deg, rgba(79, 155, 255, 0.22) 0%, transparent 100%);
+}
+
+.train-table tbody tr.active td {
+  color: var(--text);
+}
+
+.btn-neo,
+.btn-ghost-neo {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}

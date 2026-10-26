@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "Algoritmo de Recomendación de TikTok";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/tiktok-reco.css" asp-append-version="true" />
+}
+
+<div class="ttk-page">
+    <header class="ttk-header">
+        <div>
+            <span class="ttk-kicker">Neural Simulator</span>
+            <h1 class="ttk-title">Algoritmo de Recomendación de TikTok</h1>
+            <div class="ttk-subtitle">Predice si el próximo video atrapará al estudiante según su comportamiento.</div>
+        </div>
+        <div class="ttk-header-right">
+            <div class="hidden-slider">
+                <div class="hidden-label">
+                    <span>Capa Oculta</span>
+                    <span class="hidden-value"><span id="hiddenCount">8</span> neuronas</span>
+                </div>
+                <input id="hiddenSlider" class="hidden-range" type="range" min="4" max="12" step="1" value="8" />
+            </div>
+        </div>
+    </header>
+
+    <aside class="panel-neo">
+        <header class="panel-head">
+            <div>
+                <span class="panel-kicker">Entradas</span>
+                <h2 class="panel-title">25 señales</h2>
+                <div class="panel-sub">Agrupadas por categoría</div>
+            </div>
+        </header>
+        <div class="panel-body-scroll" id="inputsList"></div>
+    </aside>
+
+    <section class="panel-neo graph-panel">
+        <header class="panel-head">
+            <div>
+                <span class="panel-kicker">Arquitectura</span>
+                <h2 class="panel-title">25 → X → 3</h2>
+                <div class="panel-sub">Conexiones entre capas</div>
+            </div>
+        </header>
+        <div class="graph-body">
+            <svg class="graph-svg" id="graphSvg" viewBox="0 0 860 560">
+                <g id="connGroup"></g>
+                <g id="inGroup"></g>
+                <g id="hidGroup"></g>
+                <g id="outGroup"></g>
+            </svg>
+            <div class="graph-legend">
+                <div class="legend-item"><span class="legend-dot"></span><span>Entradas activas</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background: var(--violet);"></span><span>Capa oculta</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background: var(--accent-2);"></span><span>Salidas</span></div>
+            </div>
+        </div>
+    </section>
+
+    <aside class="panel-neo outputs-panel">
+        <header class="panel-head">
+            <div>
+                <span class="panel-kicker">Salidas</span>
+                <h2 class="panel-title">Recomendación</h2>
+                <div class="panel-sub">Valores continuos 0% - 100%</div>
+            </div>
+        </header>
+        <div class="panel-body-scroll">
+            <div class="output-list">
+                <div class="output-item">
+                    <div class="output-head">
+                        <span class="output-name">Probabilidad de Retención (+5s)</span>
+                        <span class="output-value" id="val-1">0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill" id="bar-1" style="width:0%"></div></div>
+                </div>
+                <div class="output-item">
+                    <div class="output-head">
+                        <span class="output-name">Probabilidad de Salto (Skip)</span>
+                        <span class="output-value" id="val-2">0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill warn" id="bar-2" style="width:0%"></div></div>
+                </div>
+                <div class="output-item">
+                    <div class="output-head">
+                        <span class="output-name">Probabilidad de Interacción (Like/Share)</span>
+                        <span class="output-value" id="val-3">0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill" id="bar-3" style="width:0%"></div></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+@section Scripts {
+    <script src="~/js/tiktok-reco.js" asp-append-version="true"></script>
+}
