@@ -1,0 +1,141 @@
+@{
+    ViewData["Title"] = "Entrenamiento y Base de Datos SQLite";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/actividad.css" asp-append-version="true" />
+}
+
+<nav class="actividad-nav">
+    <a href="/Actividad" class="actividad-logo">
+        <div class="actividad-logo-icon">🧠</div>
+        <span>Red Neuronal Multicapa (25 → X → 5)</span>
+    </a>
+    <div class="actividad-nav-links">
+        <a href="/Actividad" class="actividad-nav-link">Fundamentos</a>
+        <a href="/Actividad/Probar" class="actividad-nav-link">Simulador en Vivo</a>
+        <a href="/Actividad/Entrenar" class="actividad-nav-link active">Entrenar & BD SQLite</a>
+        <a href="/Actividad/Red" class="actividad-nav-link">Inspeccionar Red</a>
+        <a href="/Perceptron" class="actividad-nav-link text-muted">← Perceptrón 3x1</a>
+    </div>
+</nav>
+
+<div class="actividad-container">
+    <div class="hero-banner">
+        <h1 class="hero-title">Entrenamiento y Persistencia de Pesos</h1>
+        <p class="hero-subtitle">
+            El entrenamiento es el proceso donde la red se equivoca, mide su error mediante <strong>Cross-Entropy Loss</strong> 
+            y propaga correcciones hacia atrás (<strong>Backpropagation</strong>). Una vez terminadas las épocas, 
+            todos los pesos calculados se guardan en la base de datos <strong>SQLite</strong> para no tener que volver a entrenar.
+        </p>
+    </div>
+
+    <!-- Controles de Entrenamiento -->
+    <div class="training-controls">
+        <div>
+            <label class="form-label small text-muted mb-1">Épocas de Entrenamiento</label>
+            <input type="number" id="input_epocas" class="form-control bg-dark text-light border-secondary" value="3000" min="500" max="10000" step="500" style="width: 140px;">
+        </div>
+
+        <div>
+            <label class="form-label small text-muted mb-1">Tasa de Aprendizaje (LR)</label>
+            <input type="number" id="input_lr" class="form-control bg-dark text-light border-secondary" value="0.08" min="0.01" max="0.5" step="0.01" style="width: 130px;">
+        </div>
+
+        <div>
+            <label class="form-label small text-muted mb-1">Neuronas Capa Oculta</label>
+            <input type="number" id="input_hidden" class="form-control bg-dark text-light border-secondary" value="8" min="4" max="16" style="width: 120px;">
+        </div>
+
+        <div>
+            <button id="btn_entrenar" class="btn-neural">
+                <span>⚡</span> Iniciar Entrenamiento
+            </button>
+        </div>
+
+        <div class="ms-auto">
+            <span id="train_status" class="text-muted small font-mono">Listo para entrenar</span>
+        </div>
+    </div>
+
+    <!-- Gráfico de Loss -->
+    <div class="chart-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="m-0" style="font-weight: 700;">📉 Curva de Aprendizaje (Pérdida / Loss)</h4>
+            <span class="text-muted small">A menor pérdida, mejor predicción</span>
+        </div>
+        <canvas id="lossCanvas" style="width: 100%; height: 240px; display: block;"></canvas>
+    </div>
+
+    <!-- Tabla de Sesiones en SQLite -->
+    <div class="category-card">
+        <div class="category-header">
+            <h3 class="category-title"><span>🗄️</span> Historial de Pesos Guardados en la Base de Datos (SQLite)</h3>
+            <button class="btn btn-sm btn-outline-secondary" onclick="cargarSesiones()">Actualizar</button>
+        </div>
+        <p class="text-muted small mb-3">
+            Cada fila representa una corrida de entrenamiento guardada en la tabla <code>SesionEntrenamiento</code>, 
+            con sus matrices de pesos registradas en la tabla <code>Pesos</code>. Puedes activar cualquier versión histórica 
+            con el botón "Activar".
+        </p>
+
+        <div class="table-responsive">
+            <table class="sessions-table">
+                <thead>
+                    <tr>
+                        <th>ID Sesión</th>
+                        <th>Fecha / Hora</th>
+                        <th>Arquitectura</th>
+                        <th>Épocas</th>
+                        <th>Loss Final</th>
+                        <th>Precisión</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="sesiones_tbody">
+                    <!-- Se carga dinámicamente desde /api/red/sesiones -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Explicación pedagógica -->
+    <div class="row g-4 mt-2">
+        <div class="col-md-6">
+            <div class="category-card h-100">
+                <h4 class="mb-2 text-cyan">¿Qué hace el botón "Entrenar"?</h4>
+                <ol class="text-muted ps-3 mb-0" style="line-height: 1.8;">
+                    <li>Carga los 50 ejemplos de la tabla <code>DatosEntrenamiento</code>.</li>
+                    <li>Inicializa los pesos con el método <em>He Initialization</em> para evitar que las neuronas se saturen.</li>
+                    <li>Por cada época, pasa las entradas hacia adelante (<strong>Forward</strong>) y calcula el error con <strong>Cross-Entropy</strong>.</li>
+                    <li>Calcula las derivadas de cada peso hacia atrás (<strong>Backpropagation</strong>) usando la regla de la cadena.</li>
+                    <li>Ajusta cada una de las 253 perillas en dirección al mínimo error.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="category-card h-100">
+                <h4 class="mb-2 text-green">¿Por qué guardar los pesos en SQLite?</h4>
+                <p class="text-muted" style="line-height: 1.7;">
+                    El entrenamiento consume tiempo y cómputo. Una vez que la red encontró las combinaciones óptimas de números, 
+                    <strong>los pesos son el conocimiento adquirido</strong>. Al guardarlos en SQLite:
+                </p>
+                <ul class="text-muted ps-3 mb-0" style="line-height: 1.7;">
+                    <li>La aplicación web puede responder predicciones en milisegundos sin reentrenar.</li>
+                    <li>Podemos auditar qué peso tiene cada entrada (explicabilidad).</li>
+                    <li>Permite comparar experimentos: entrenar con 8 neuronas vs 16 neuronas y conservar ambas versiones.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/actividad.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarEntrenador();
+        });
+    </script>
+}

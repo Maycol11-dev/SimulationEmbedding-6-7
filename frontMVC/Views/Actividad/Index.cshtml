@@ -1,0 +1,148 @@
+@{
+    ViewData["Title"] = "Red Neuronal: ¿Qué actividad hacer hoy?";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/actividad.css" asp-append-version="true" />
+}
+
+<nav class="actividad-nav">
+    <a href="/Actividad" class="actividad-logo">
+        <div class="actividad-logo-icon">🧠</div>
+        <span>Red Neuronal Multicapa (25 → X → 5)</span>
+    </a>
+    <div class="actividad-nav-links">
+        <a href="/Actividad" class="actividad-nav-link active">Fundamentos</a>
+        <a href="/Actividad/Probar" class="actividad-nav-link">Simulador en Vivo</a>
+        <a href="/Actividad/Entrenar" class="actividad-nav-link">Entrenar & BD SQLite</a>
+        <a href="/Actividad/Red" class="actividad-nav-link">Inspeccionar Red</a>
+        <a href="/Perceptron" class="actividad-nav-link text-muted">← Volver al Perceptrón 3x1</a>
+    </div>
+</nav>
+
+<div class="actividad-container">
+    <div class="hero-banner">
+        <h1 class="hero-title">¿Cómo aprende una Red Neuronal?</h1>
+        <p class="hero-subtitle">
+            Imaginá que querés tomar una decisión inteligente: <em>"¿Qué actividad debería hacer hoy?"</em>. 
+            Hay muchos factores en juego (el clima, tu energía, tu dinero, tus amigos y tus gustos). 
+            Una red neuronal resuelve este problema exactamente igual que el cerebro: ponderando información, 
+            combinando ideas y ajustando sus "perillas" cada vez que se equivoca.
+        </p>
+        <div class="tags-row">
+            <span class="tag-badge">⚡ 25 Entradas Reales</span>
+            <span class="tag-badge">🧠 Capa Oculta con Activación ReLU</span>
+            <span class="tag-badge">🎯 5 Salidas Softmax (Playa, Cine, Gym, Casa, Salir)</span>
+            <span class="tag-badge">🗄️ Persistencia en SQLite (Pesos & Bias)</span>
+            <span class="tag-badge">⚙️ API REST en .NET 10</span>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="category-card h-100">
+                <div class="category-header">
+                    <h3 class="category-title"><span>1.</span> Las Entradas (Inputs)</h3>
+                </div>
+                <p class="text-muted">
+                    Son los <strong>25 datos</strong> que describen la realidad de tu día. Cada uno se normaliza en un número entre 0 y 1 
+                    (por ejemplo, temperatura 0.85 = calor, lluvia 1 = tormenta, energía 0.9 = muy activo).
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
+                    <span class="text-muted small">5 Categorías temáticas</span>
+                    <a href="/Actividad/Probar" class="btn-neural-outline py-1 px-3 text-decoration-none small">Ver Entradas →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="category-card h-100">
+                <div class="category-header">
+                    <h3 class="category-title"><span>2.</span> Capa Oculta & Pesos</h3>
+                </div>
+                <p class="text-muted">
+                    Cada flecha que une dos neuronas tiene un <strong>peso ($w$)</strong> (importancia) y un <strong>bias ($b$)</strong> (umbral). 
+                    La capa oculta permite a la red combinar conceptos complejos como <em>"Si hace frío pero tengo plata y amigos, no voy a la playa pero sí al cine"</em>.
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
+                    <span class="text-muted small">Activación no lineal (ReLU)</span>
+                    <a href="/Actividad/Red" class="btn-neural-outline py-1 px-3 text-decoration-none small">Ver Arquitectura →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="category-card h-100">
+                <div class="category-header">
+                    <h3 class="category-title"><span>3.</span> Aprendizaje & Memoria</h3>
+                </div>
+                <p class="text-muted">
+                    La red arranca sin saber nada (pesos al azar). Al entrenar, compara su respuesta con 50 ejemplos históricos, 
+                    mide su error (<strong>Loss</strong>) y ajusta sus pesos mediante <strong>Backpropagation</strong>. 
+                    Esos pesos finales se guardan en la base de datos <strong>SQLite</strong>.
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
+                    <span class="text-muted small">Almacenamiento persistente</span>
+                    <a href="/Actividad/Entrenar" class="btn-neural-outline py-1 px-3 text-decoration-none small">Entrenar Red →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparación de Escala: Perceptrón vs Esta Red vs LLMs -->
+    <div class="category-card">
+        <h3 class="mb-3">📊 La Evolución de la Escala</h3>
+        <p class="text-muted mb-4">
+            La diferencia fundamental entre los modelos de Inteligencia Artificial no es la magia: es <strong>la cantidad de entradas, capas y perillas</strong>.
+        </p>
+
+        <div class="table-responsive">
+            <table class="sessions-table">
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Entradas</th>
+                        <th>Capas Ocultas</th>
+                        <th>Parámetros (Pesos + Bias)</th>
+                        <th>Salidas</th>
+                        <th>Capacidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Perceptrón 3x1</strong> (playa.py)</td>
+                        <td>3</td>
+                        <td>0 (directo)</td>
+                        <td><span class="font-mono text-cyan">4</span></td>
+                        <td>1 binaria (0 ó 1)</td>
+                        <td>Decisiones lineales ("al menos 2 de 3")</td>
+                    </tr>
+                    <tr style="background: rgba(0, 210, 255, 0.05);">
+                        <td><strong>Este Sistema Multicapa</strong></td>
+                        <td>25</td>
+                        <td>1 capa (8 neuronas)</td>
+                        <td><span class="font-mono text-green">253</span></td>
+                        <td>5 probabilidades (Softmax)</td>
+                        <td>Recomendaciones multivariable complejas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CNN Dígitos</strong> (MNIST)</td>
+                        <td>784 píxeles (28x28)</td>
+                        <td>2 convolucionales + 1 densa</td>
+                        <td><span class="font-mono text-purple">~210.000</span></td>
+                        <td>10 dígitos (0 al 9)</td>
+                        <td>Reconoce patrones visuales y formas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grandes Modelos</strong> (LLMs)</td>
+                        <td>Millones de tokens</td>
+                        <td>Cientos de capas Transformers</td>
+                        <td><span class="font-mono text-amber">Miles de millones</span></td>
+                        <td>Vocabulario (~100.000 palabras)</td>
+                        <td>Razonamiento, código y lenguaje humano</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

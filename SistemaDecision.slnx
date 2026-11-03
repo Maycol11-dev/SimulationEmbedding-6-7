@@ -3,4 +3,5 @@
   <Folder Name="/Src/cSharp/">
     <Project Path="Src/cSharp/SistemaDecision.API/SistemaDecision.API.csproj" />
   </Folder>
+  <Project Path="frontMVC/frontMVC.csproj" />
 </Solution>

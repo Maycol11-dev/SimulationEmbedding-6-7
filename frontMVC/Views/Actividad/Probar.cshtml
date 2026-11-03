@@ -1,0 +1,296 @@
+@{
+    ViewData["Title"] = "Simulador en Vivo - 25 Entradas";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/actividad.css" asp-append-version="true" />
+}
+
+<nav class="actividad-nav">
+    <a href="/Actividad" class="actividad-logo">
+        <div class="actividad-logo-icon">🧠</div>
+        <span>Red Neuronal Multicapa (25 → X → 5)</span>
+    </a>
+    <div class="actividad-nav-links">
+        <a href="/Actividad" class="actividad-nav-link">Fundamentos</a>
+        <a href="/Actividad/Probar" class="actividad-nav-link active">Simulador en Vivo</a>
+        <a href="/Actividad/Entrenar" class="actividad-nav-link">Entrenar & BD SQLite</a>
+        <a href="/Actividad/Red" class="actividad-nav-link">Inspeccionar Red</a>
+        <a href="/Perceptron" class="actividad-nav-link text-muted">← Perceptrón 3x1</a>
+    </div>
+    <div class="api-status-pill">
+        <span class="api-status-dot" id="api_dot"></span>
+        <span id="api_text">Conectando a API...</span>
+    </div>
+</nav>
+
+<div class="actividad-container">
+    <div class="simulator-layout">
+        
+        <!-- Columna Izquierda: Los 25 Parámetros -->
+        <div class="inputs-column">
+            
+            <!-- 1. Clima (5 entradas) -->
+            <div class="category-card">
+                <div class="category-header">
+                    <h3 class="category-title"><span>☁️</span> 1. Clima y Ambiente (5 Entradas)</h3>
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Temperatura exterior</span>
+                        <span class="input-val-badge" id="temp_val">85%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="temp" min="0" max="1" step="0.05" value="0.85">
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Está lloviendo?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="lluvia">
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Hay viento fuerte?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="viento">
+                    </div>
+                </div>
+
+                <div class="input-slider-group mt-3">
+                    <div class="input-slider-label">
+                        <span>Humedad ambiente</span>
+                        <span class="input-val-badge" id="humedad_val">40%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="humedad" min="0" max="1" step="0.05" value="0.4">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Horas de sol esperadas</span>
+                        <span class="input-val-badge" id="sol_val">90%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="sol" min="0" max="1" step="0.05" value="0.9">
+                </div>
+            </div>
+
+            <!-- 2. Estado Personal (5 entradas) -->
+            <div class="category-card">
+                <div class="category-header">
+                    <h3 class="category-title"><span>😊</span> 2. Estado Físico y Emocional (5 Entradas)</h3>
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Nivel de energía corporal</span>
+                        <span class="input-val-badge" id="energia_val">80%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="energia" min="0" max="1" step="0.05" value="0.8">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Estado de ánimo general</span>
+                        <span class="input-val-badge" id="animo_val">85%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="animo" min="0" max="1" step="0.05" value="0.85">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Nivel de estrés mental</span>
+                        <span class="input-val-badge" id="estres_val">20%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="estres" min="0" max="1" step="0.05" value="0.2">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Horas de sueño reparador</span>
+                        <span class="input-val-badge" id="sueno_val">80%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="sueno" min="0" max="1" step="0.05" value="0.8">
+                </div>
+
+                <div class="toggle-group mt-2">
+                    <span>¿Te sentís saludable (sin fiebre ni dolor)?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="salud" checked>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Recursos y Tiempo (5 entradas) -->
+            <div class="category-card">
+                <div class="category-header">
+                    <h3 class="category-title"><span>💰</span> 3. Recursos y Logística (5 Entradas)</h3>
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Dinero disponible para gastar hoy</span>
+                        <span class="input-val-badge" id="dinero_val">60%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="dinero" min="0" max="1" step="0.05" value="0.6">
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Tenés transporte disponible (auto / moto)?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="transporte" checked>
+                    </div>
+                </div>
+
+                <div class="input-slider-group mt-3">
+                    <div class="input-slider-label">
+                        <span>Tiempo libre disponible</span>
+                        <span class="input-val-badge" id="tiempolibre_val">80%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="tiempolibre" min="0" max="1" step="0.05" value="0.8">
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Es fin de semana (Sábado / Domingo)?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="finde" checked>
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Es día feriado?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="feriado">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Social (5 entradas) -->
+            <div class="category-card">
+                <div class="category-header">
+                    <h3 class="category-title"><span>👥</span> 4. Entorno Social (5 Entradas)</h3>
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Amigos disponibles para hacer un plan?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="amigos" checked>
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Pareja disponible?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="pareja">
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Familia disponible?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="familia">
+                    </div>
+                </div>
+
+                <div class="input-slider-group mt-3">
+                    <div class="input-slider-label">
+                        <span>Ganas de socializar y charlar</span>
+                        <span class="input-val-badge" id="ganas_social_val">80%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="ganas_social" min="0" max="1" step="0.05" value="0.8">
+                </div>
+
+                <div class="toggle-group">
+                    <span>¿Tenés compromisos o citas agendadas?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input param-input" type="checkbox" id="compromisos">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Preferencias del Día (5 entradas) -->
+            <div class="category-card">
+                <div class="category-header">
+                    <h3 class="category-title"><span>🎯</span> 5. Preferencias Personales (5 Entradas)</h3>
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Ganas de hacer actividad física intensa</span>
+                        <span class="input-val-badge" id="ganas_fisica_val">40%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="ganas_fisica" min="0" max="1" step="0.05" value="0.4">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Ganas de entretenimiento o diversión</span>
+                        <span class="input-val-badge" id="ganas_entretenimiento_val">70%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="ganas_entretenimiento" min="0" max="1" step="0.05" value="0.7">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Ganas de descansar, acostarse o estar en paz</span>
+                        <span class="input-val-badge" id="ganas_descansar_val">20%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="ganas_descansar" min="0" max="1" step="0.05" value="0.2">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Ganas de estar al aire libre o en la naturaleza</span>
+                        <span class="input-val-badge" id="ganas_airelibre_val">95%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="ganas_airelibre" min="0" max="1" step="0.05" value="0.95">
+                </div>
+
+                <div class="input-slider-group">
+                    <div class="input-slider-label">
+                        <span>Ganas de estudiar o aprender algo nuevo</span>
+                        <span class="input-val-badge" id="ganas_aprender_val">10%</span>
+                    </div>
+                    <input type="range" class="form-range param-input" id="ganas_aprender" min="0" max="1" step="0.05" value="0.1">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Columna Derecha: Resultado de la Red Neuronal -->
+        <div class="results-column">
+            <div class="results-card">
+                <h4 class="mb-3 text-center" style="font-weight: 700; color: #fff;">Decisión de la Red</h4>
+
+                <div class="winner-banner">
+                    <span class="winner-emoji" id="winner_emoji">🏖️</span>
+                    <h2 class="winner-name" id="winner_name">Playa</h2>
+                    <span class="winner-confidence" id="winner_confidence">Calculando...</span>
+                </div>
+
+                <h5 class="mb-3" style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">
+                    Distribución de Probabilidades (Softmax):
+                </h5>
+
+                <div class="prob-bars-list" id="prob_list">
+                    <!-- Se llena automáticamente con JS -->
+                </div>
+
+                <div class="explanation-box" id="didactic_text">
+                    <div class="explanation-title">💡 Explicación del Razonamiento</div>
+                    <p class="mb-0">Mueve los interruptores o deslizadores de la izquierda para observar cómo la red neuronal recalcula en vivo con los pesos entrenados en la base de datos.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/actividad.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarSimulador();
+        });
+    </script>
+}

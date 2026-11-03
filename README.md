@@ -49,9 +49,21 @@ Visualiza el perceptrón sin escribir fórmulas frías. Se accede a `/Perceptron
 - `train.py` — CNN chiquita para reconocer dígitos MNIST (5 épocas). Guarda `mnist.pth`.
 - `README.md` — Explica `Conv2d`, `ReLU`, `MaxPool2d`, `Flatten`, `Linear`, `CrossEntropyLoss`, `argmax`, diferencia con el perceptrón (escalado).
 
-### 4) `Src/cSharp/SistemaDecision.API/`
+### 4) `Src/cSharp/SistemaDecision.API/` (.NET 10 + SQLite)
 
-API minimal en **.NET 10** con OpenAPI. Actualmente es el scaffold del endpoint `/weatherforecast`. Pendiente integrar con el modelo.
+API con **Entity Framework Core** y **SQLite** (`decisiones.db`). Implementa un motor de red neuronal multicapa (25 -> X -> 5) en C# con backpropagation.
+
+- Guarda las sesiones de entrenamiento y los pesos aprendidos en tablas SQLite (`SesionesEntrenamiento`, `CapasRed`, `Pesos`).
+- Endpoints REST para `/api/red/predecir`, `/api/red/entrenar`, `/api/red/forward-paso`, `/api/red/pesos/{id}` y `/api/red/sesiones`.
+
+### 5) Sistema Multicapa: "¿Qué actividad hacer hoy?" (`/Actividad`)
+
+Evolución completa accesible desde la web:
+- **25 Entradas** agrupadas en 5 categorías (Clima, Estado Personal, Recursos, Social y Preferencias).
+- **Capa Oculta** con neuronas configurables y activación **ReLU**.
+- **5 Salidas** con probabilidades calculadas por **Softmax**: Playa, Cine, Gym, Casa o Salir.
+- **Entrenar en Vivo**: animación de la curva de pérdida (Loss) y persistencia en la BD SQLite.
+- **Inspección de Red**: canvas interactivo con los pesos reales cargados de la base de datos.
 
 ## Cómo ejecutar
 

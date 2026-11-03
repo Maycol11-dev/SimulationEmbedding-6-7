@@ -1,0 +1,94 @@
+@{
+    ViewData["Title"] = "Inspección de la Red y Pesos Reales";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/actividad.css" asp-append-version="true" />
+}
+
+<nav class="actividad-nav">
+    <a href="/Actividad" class="actividad-logo">
+        <div class="actividad-logo-icon">🧠</div>
+        <span>Red Neuronal Multicapa (25 → X → 5)</span>
+    </a>
+    <div class="actividad-nav-links">
+        <a href="/Actividad" class="actividad-nav-link">Fundamentos</a>
+        <a href="/Actividad/Probar" class="actividad-nav-link">Simulador en Vivo</a>
+        <a href="/Actividad/Entrenar" class="actividad-nav-link">Entrenar & BD SQLite</a>
+        <a href="/Actividad/Red" class="actividad-nav-link active">Inspeccionar Red</a>
+        <a href="/Perceptron" class="actividad-nav-link text-muted">← Perceptrón 3x1</a>
+    </div>
+</nav>
+
+<div class="actividad-container">
+    <div class="hero-banner">
+        <h1 class="hero-title">Arquitectura e Inspección de Pesos</h1>
+        <p class="hero-subtitle">
+            Visualización gráfica en tiempo real de las <strong>25 entradas</strong>, la <strong>capa oculta (X neuronas)</strong> 
+            y las <strong>5 salidas</strong>. Las líneas cian representan pesos positivos (estímulos favorables) 
+            y las líneas rojas representan pesos negativos (inhibiciones), leídas directamente de la base de datos <strong>SQLite</strong>.
+        </p>
+    </div>
+
+    <!-- Canvas de la Red -->
+    <div class="category-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="m-0" style="font-weight: 700;">🕸️ Grafo de Conexiones Neuronales</h4>
+            <div class="d-flex gap-3 small">
+                <span class="d-flex align-items-center gap-1"><span style="width: 12px; height: 12px; background: #00f5d4; border-radius: 50%; display: inline-block;"></span> Peso positivo (Suma)</span>
+                <span class="d-flex align-items-center gap-1"><span style="width: 12px; height: 12px; background: #ff0054; border-radius: 50%; display: inline-block;"></span> Peso negativo (Resta)</span>
+            </div>
+        </div>
+
+        <div style="background: #06090e; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;">
+            <canvas id="networkCanvas" style="width: 100%; height: 700px; display: block;"></canvas>
+        </div>
+    </div>
+
+    <!-- Explicación de las operaciones internas -->
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="category-card h-100">
+                <h4 class="text-cyan mb-3">1. Capa de Entrada (25)</h4>
+                <p class="text-muted small" style="line-height: 1.7;">
+                    Los 25 nodos de la izquierda reciben el vector normalizado $[x_0, x_1, \dots, x_{24}]$. 
+                    No realizan cómputo matemático por sí mismos, solo distribuyen los valores a través de las 200 conexiones iniciales ($25 \times 8$).
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="category-card h-100">
+                <h4 class="text-purple mb-3">2. Capa Oculta (ReLU)</h4>
+                <p class="text-muted small" style="line-height: 1.7;">
+                    Cada neurona oculta $h_j$ calcula:
+                    <br>
+                    <code class="d-block my-2 p-2 bg-dark rounded font-mono text-light">z_j = &sum;(x_i &middot; W_{i,j}) + b_j</code>
+                    Y luego aplica la activación no lineal:
+                    <code class="d-block my-2 p-2 bg-dark rounded font-mono text-light">a_j = max(0, z_j)</code>
+                    Esto le permite a la red modelar reglas no lineales complejas.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="category-card h-100">
+                <h4 class="text-green mb-3">3. Capa de Salida (Softmax)</h4>
+                <p class="text-muted small" style="line-height: 1.7;">
+                    Las 5 actividades calculan su suma ponderada y se convierten en probabilidades que suman exactamente 100%:
+                    <code class="d-block my-2 p-2 bg-dark rounded font-mono text-light">P(k) = e^{z_k} / &sum; e^{z_m}</code>
+                    La opción con mayor probabilidad resulta la actividad elegida.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/actividad.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarVisualizadorRed();
+        });
+    </script>
+}
