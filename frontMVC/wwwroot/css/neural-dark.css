@@ -17,10 +17,11 @@ html, body {
 }
 
 body {
-  background: radial-gradient(1200px 800px at 50% 0%, #151b33 0%, var(--bg) 55%);
+  background: var(--bg);
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
+  overflow-x: hidden;
 }
 
 main {
@@ -28,11 +29,28 @@ main {
 }
 
 .page-full {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding: clamp(16px, 4vw, 48px);
   gap: clamp(18px, 4vw, 36px);
+  background: radial-gradient(1200px 800px at 50% 0%, rgba(21, 27, 51, 0.96) 0%, rgba(5, 7, 15, 0.98) 52%, var(--bg) 100%);
+  isolation: isolate;
+}
+
+.page-full::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(900px 220px at 50% -10%, rgba(79, 155, 255, 0.18), transparent 58%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-full > * {
+  position: relative;
+  z-index: 1;
 }
 
 .page-header {
@@ -247,6 +265,36 @@ main {
   text-anchor: middle;
   font-size: 11px;
   font-family: "JetBrains Mono", monospace;
+}
+
+.neural-explainer {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 16px 18px;
+}
+
+.neural-explainer p {
+  margin: 10px 0 0;
+  color: var(--sub);
+  line-height: 1.7;
+  font-size: 0.96rem;
+}
+
+.formula {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--text);
+  background: rgba(79, 155, 255, 0.08);
+  border: 1px solid rgba(79, 155, 255, 0.18);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+.explainer-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+  color: var(--sub);
 }
 
 .narration-bar {

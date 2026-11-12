@@ -86,7 +86,7 @@
                 <div class="actions-row">
                     <a class="btn-ghost-neo" asp-controller="Perceptron" asp-action="Index">Volver</a>
                     <button class="btn-ghost-neo" id="btnReset">Reiniciar</button>
-                    <button class="btn-neo hidden" id="btnTrain">Iniciar aprendizaje</button>
+                    <button class="btn-neo" id="btnTrain">Iniciar aprendizaje</button>
                     <button class="btn-neo" id="btnNext">Siguiente</button>
                 </div>
             </div>
@@ -212,6 +212,15 @@
                 </div>
             </section>
         </aside>
+    </div>
+
+    <div class="neural-explainer">
+        <div class="explainer-kicker">Qué está pasando</div>
+        <p>
+            Cada entrada contribuye con su valor multiplicado por un peso: <span class="formula">z = w1·x1 + w2·x2 + w3·x3 + b</span>.
+            La neurona suma todas esas contribuciones para obtener un valor total. Esa suma se convierte en la decisión final con la función sigmoide: <span class="formula">a = 1 / (1 + e<sup>-z</sup>)</span>.
+            Si <span class="formula">a</span> está por encima de 0.5, la red decide “Sí”; si está por debajo, decide “No”.
+        </p>
     </div>
 </div>
 

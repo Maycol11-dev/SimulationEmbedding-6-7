@@ -32,7 +32,7 @@
     document.querySelectorAll('.step-panel').forEach(p => p.classList.add('hidden'));
     const panel = document.getElementById('panel-'+n); if(panel) panel.classList.remove('hidden');
     document.getElementById('btnNext').classList.toggle('hidden', n === 6);
-    document.getElementById('btnTrain').classList.toggle('hidden', n !== 3);
+    document.getElementById('btnTrain').classList.toggle('hidden', false);
 
     if(n===1){ narr('El problema','Decidir ir a la playa con sol, calor y fin de semana.'); }
     if(n===2){ narr('La mesa de perillas','Cada entrada tiene un peso que define su importancia.'); updateLinks(); }
