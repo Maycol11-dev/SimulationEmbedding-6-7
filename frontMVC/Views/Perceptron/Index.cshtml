@@ -1,101 +1,139 @@
 @{
-    ViewData["Title"] = "Simuladores Neuronales";
+    ViewData["Title"] = "Cerebro Digital";
 }
 
 @section Head {
     <link rel="stylesheet" href="~/css/neural-dark.css" asp-append-version="true" />
+    <style>
+        .split-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        @@media (max-width: 1100px) {
+            .split-hero { grid-template-columns: 1fr; }
+        }
+        .step-card {
+            border-radius: 18px;
+            padding: 1.75rem;
+            background: radial-gradient(800px 300px at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%), var(--panel);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-card.cyan { border-color: rgba(34, 211, 238, 0.55); box-shadow: 0 0 40px rgba(34, 211, 238, 0.08); }
+        .step-card.violet { border-color: rgba(217, 70, 239, 0.55); box-shadow: 0 0 40px rgba(217, 70, 239, 0.1); }
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--sub);
+        }
+        .step-badge.live {
+            color: #f0abfc;
+            border: 1px solid rgba(217, 70, 239, 0.5);
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(217, 70, 239, 0.12);
+        }
+        .step-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+        }
+        .step-points {
+            margin: 0;
+            padding-left: 1.1rem;
+            color: #a0aec0;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .step-points li { margin: 0.25rem 0; }
+        .step-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.5rem; }
+        .scale-bar {
+            margin-top: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            padding: 1.2rem 1.5rem;
+        }
+        .scale-title {
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            font-size: 0.7rem;
+            color: var(--sub);
+            margin-bottom: 0.8rem;
+        }
+        .scale-items {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem 1rem;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.95rem;
+        }
+        .scale-item { color: #e7e9ee; }
+        .scale-item span { color: var(--sub); font-size: 0.85rem; }
+        .scale-arrow { color: var(--accent); font-size: 1.2rem; }
+    </style>
 }
 
 <div class="page-full">
     <header class="page-header">
-        <span class="page-kicker">Neural Simulators</span>
-        <h1 class="page-title">Simuladores de Redes Neuronales</h1>
-        <p class="page-subtitle">Desde el perceptrón más elemental de 3 entradas hasta una red multicapa completa de 25 entradas con API .NET y persistencia de pesos en SQLite.</p>
+        <span class="page-kicker">Neural Fundamentals</span>
+        <h1 class="page-title">Cerebro Digital: ¿Cómo aprende una Red Neuronal?</h1>
+        <p class="page-subtitle">El mismo mecanismo matemático de 4 perillas que decide si vas a la playa es el que mueve al algoritmo de TikTok y a ChatGPT</p>
     </header>
 
-    <!-- Tarjeta Principal Destacada: Red Multicapa de 25 Entradas -->
-    <div style="background: linear-gradient(135deg, rgba(0, 210, 255, 0.12) 0%, rgba(157, 78, 221, 0.12) 100%); border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <div>
-                <span class="badge text-bg-info mb-1 font-mono" style="font-size: 0.75rem;">NUEVO PROYECTO PRINCIPAL</span>
-                <h2 style="font-size: 1.8rem; font-weight: 800; margin: 0; color: #fff;">
-                    🎯 Red Neuronal Multicapa: "¿Qué actividad hacer hoy?"
-                </h2>
-                <span style="color: #8b9bb4; font-size: 0.95rem;">25 Entradas (Clima, Estado, Finanzas, Social, Gustos) → X Neuronas Ocultas (ReLU) → 5 Salidas (Softmax)</span>
-            </div>
-            <div class="d-flex gap-2">
-                <a class="btn-neo text-decoration-none" asp-controller="Actividad" asp-action="Probar">Probar Simulador en Vivo ⚡</a>
-            </div>
-        </div>
-
-        <p style="color: #a0aec0; font-size: 0.95rem; max-width: 900px; line-height: 1.6; margin-bottom: 1.5rem;">
-            Sistema completo conectado con <strong>API .NET 10</strong> y base de datos relacional <strong>SQLite</strong>. 
-            Cualquier persona puede entender paso a paso cómo cada perilla (peso) altera las probabilidades, cómo aprende por backpropagation y cómo se guardan y activan las sesiones de entrenamiento en la base de datos.
-        </p>
-
-        <div class="actions-row">
-            <a class="btn-neo text-decoration-none" asp-controller="Actividad" asp-action="Probar">🕹️ Simulador en Vivo (25 Sliders)</a>
-            <a class="btn-ghost-neo text-decoration-none" asp-controller="Actividad" asp-action="Entrenar">⚡ Entrenar & BD SQLite</a>
-            <a class="btn-ghost-neo text-decoration-none" asp-controller="Actividad" asp-action="Red">🕸️ Inspeccionar Red & Pesos</a>
-            <a class="btn-ghost-neo text-decoration-none" asp-controller="Actividad" asp-action="Index">📖 Fundamentos Teóricos</a>
-        </div>
-    </div>
-
-    <div class="layout-grid">
-        <section class="panel">
-            <header class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-kicker">Fundamentos</span>
-                    <h2 class="panel-title">Perceptrón 3x1</h2>
-                    <span class="panel-subtitle">Aprende ajustando 3 pesos y 1 bias</span>
-                </div>
-            </header>
-            <div class="panel-body">
-                <div class="narration-bar">
-                    <span class="narration-kicker">Objetivo</span>
-                    <span class="narration-text">Ver el ciclo intentar → equivocarse → ajustar hasta descubrir "al menos 2 de 3" (¿Ir a la playa?)</span>
-                </div>
-                <div class="actions-row">
-                    <a class="btn-neo text-decoration-none" asp-controller="Perceptron" asp-action="Neural">Recorrido unificado</a>
-                    <a class="btn-ghost-neo text-decoration-none" asp-controller="Perceptron" asp-action="Entrenar">Entrenamiento animado</a>
-                    <a class="btn-ghost-neo text-decoration-none" asp-controller="Perceptron" asp-action="Entender">Entender / Probar</a>
-                </div>
+    <div class="split-hero">
+        <section class="step-card cyan">
+            <div class="step-badge">Paso 1 · El Átomo · Didáctico</div>
+            <h2 class="step-title">Perceptrón 3×1 (Fundamentos)</h2>
+            <ul class="step-points">
+                <li>3 entradas: Sol, Calor, Fin de semana</li>
+                <li>1 neurona y 4 perillas totales (3 pesos + 1 bias)</li>
+                <li>Regla aprendida: "Al menos 2 de 3"</li>
+            </ul>
+            <div class="step-actions">
+                <a class="btn-neo text-decoration-none" asp-controller="Perceptron" asp-action="Neural">Recorrido Unificado</a>
+                <a class="btn-ghost-neo text-decoration-none" asp-controller="Perceptron" asp-action="Entrenar">Entrenamiento Animado</a>
+                <a class="btn-ghost-neo text-decoration-none" asp-controller="Perceptron" asp-action="Entender">Entender/Probar</a>
             </div>
         </section>
 
-        <aside class="side-stack">
-            <section class="data-panel">
-                <header class="data-header">
-                    <div class="data-title-group">
-                        <span class="data-kicker">Simulador Didáctico</span>
-                        <h3 class="data-title">Recomendador TikTok</h3>
-                    </div>
-                </header>
-                <div class="data-body">
-                    <div class="narration-bar" style="align-self: stretch; text-align: left; border-radius: 14px;">
-                        <span class="narration-kicker">Arquitectura</span>
-                        <span class="narration-text">25 entradas → X neuronas (4-12) → 3 salidas (Retener, Skip, Interactuar).</span>
-                    </div>
-                    <div class="actions-row">
-                        <a class="btn-neo text-decoration-none" asp-controller="Perceptron" asp-action="TikTok">Abrir simulador</a>
-                    </div>
-                </div>
-            </section>
+        <section class="step-card violet">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="step-badge">Paso 2 · La Escala Real · Algoritmo TikTok</div>
+                <span class="step-badge live">EN VIVO</span>
+            </div>
+            <h2 class="step-title">Algoritmo de Recomendación de TikTok</h2>
+            <ul class="step-points">
+                <li>25 señales reales de comportamiento</li>
+                <li>Capa oculta interactiva y grafo con flujo sináptico animado</li>
+                <li>3 salidas probabilísticas: retención, skip e interacción</li>
+            </ul>
+            <div class="step-actions">
+                <a class="btn-neo text-decoration-none" asp-controller="Perceptron" asp-action="TikTok">Abrir Simulador Interactivo ⚡</a>
+            </div>
+        </section>
+    </div>
 
-            <section class="data-panel">
-                <header class="data-header">
-                    <div class="data-title-group">
-                        <span class="data-kicker">Conexión</span>
-                        <h3 class="data-title">Escala</h3>
-                    </div>
-                </header>
-                <div class="data-body">
-                    <div class="data-row"><div class="data-label"><span>Perceptrón</span></div><span class="data-sub">4 perillas</span><span>playa.py</span></div>
-                    <div class="data-row"><div class="data-label"><span>Multicapa 25xX</span></div><span class="data-sub">253 perillas</span><span>SQLite + API</span></div>
-                    <div class="data-row"><div class="data-label"><span>CNN MNIST</span></div><span class="data-sub">210k perillas</span><span>train.py</span></div>
-                    <div class="data-row"><div class="data-label"><span>LLMs</span></div><span class="data-sub">Miles de millones</span><span>ChatGPT</span></div>
-                </div>
-            </section>
-        </aside>
+    <div class="scale-bar">
+        <div class="scale-title">Escala comparativa</div>
+        <div class="scale-items">
+            <div class="scale-item">Perceptrón <span>(4 parámetros)</span></div>
+            <div class="scale-arrow">→</div>
+            <div class="scale-item">TikTok <span>(~250 parámetros)</span></div>
+            <div class="scale-arrow">→</div>
+            <div class="scale-item">ChatGPT <span>(1.8 Billones de parámetros)</span></div>
+        </div>
     </div>
 </div>

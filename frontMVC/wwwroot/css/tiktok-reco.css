@@ -8,6 +8,7 @@
   --sub: #9aa3c0;
   --accent: #4f9bff;
   --accent-2: #22d3ee;
+  --violet: #9d4edd;
   --green: #22c55e;
   --orange: #f59e0b;
   --red: #ef4444;
@@ -79,6 +80,37 @@ body {
 .ttk-subtitle {
   color: var(--sub);
   margin-top: 4px;
+}
+
+.ttk-scroll-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.scroll-btn {
+  gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.scroll-btn.active {
+  box-shadow: 0 0 24px rgba(79, 155, 255, 0.35);
+}
+
+.scroll-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 70, 239, 0.45);
+  background: rgba(217, 70, 239, 0.12);
+  color: #f0abfc;
+  font-size: 0.85rem;
 }
 
 .ttk-header-right {
@@ -395,18 +427,25 @@ body {
 }
 
 .node-circle {
-  fill: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%), var(--card);
+  fill: var(--card);
   stroke: rgba(148, 163, 184, 0.5);
   stroke-width: 1.5;
+  transition: all 200ms ease;
 }
 
 .node-circle.active {
   stroke: var(--accent-2);
-  filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.25));
+  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.45));
 }
 
 .node-circle.hidden-node {
   stroke: rgba(167, 139, 250, 0.7);
+}
+
+.node-circle.hidden-node.lit {
+  stroke: var(--violet);
+  filter: drop-shadow(0 0 8px rgba(157, 78, 221, 0.8));
+  r: 13;
 }
 
 .node-label {
@@ -428,6 +467,15 @@ body {
 
 .conn.active {
   stroke: var(--accent-2);
+}
+
+.conn.pulse {
+  stroke-dasharray: 6, 6;
+  animation: flowDash 0.8s linear infinite;
+}
+
+@keyframes flowDash {
+  to { stroke-dashoffset: -24; }
 }
 
 ::-webkit-scrollbar {
